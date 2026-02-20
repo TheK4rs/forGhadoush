@@ -6,276 +6,268 @@
 <title>hey cutie look at the page not here:3</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
+body{
+    background:linear-gradient(-45deg,#ff758c,#ff7eb3,#ffd6e0,#ffc2d1);
+    background-size:400% 400%;
+    animation:gradient 12s ease infinite;
+    color:white;
+    text-align:center;
 }
-
-body {
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    color: white;
-    text-align: center;
-    overflow-x: hidden;
+@keyframes gradient{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
-
-/* Layout */
-section {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
+section{padding:60px 20px}
+.container{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(15px);
+    padding:30px;
+    border-radius:25px;
+    max-width:900px;
+    margin:auto;
+    box-shadow:0 25px 50px rgba(0,0,0,0.3);
 }
-
-.container {
-    backdrop-filter: blur(15px);
-    background: rgba(255,255,255,0.1);
-    padding: 40px;
-    border-radius: 30px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
-    max-width: 750px;
-    animation: fadeIn 1.5s ease;
+button{
+    padding:10px 20px;
+    margin:8px;
+    border:none;
+    border-radius:25px;
+    font-weight:bold;
+    cursor:pointer;
+    background:white;
+    color:#ff4d6d;
+    transition:0.3s;
 }
-
-h1 {
-    font-size: 2.8rem;
-    margin-bottom: 15px;
-    animation: float 3s ease-in-out infinite;
+button:hover{transform:scale(1.1)}
+.hidden{display:none}
+canvas{background:white;border-radius:12px;margin:20px auto;display:block}
+#ticBoard button{width:70px;height:70px;font-size:1.8rem;margin:4px}
+#reactionBox{
+    width:300px;height:150px;margin:20px auto;
+    background:#fff;color:#ff4d6d;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:15px;font-weight:bold;
+    cursor:pointer;
 }
-
-h2 { margin: 15px 0; }
-
-p {
-    line-height: 1.7;
-    margin-bottom: 15px;
+.confetti{
+    position:fixed;width:8px;height:8px;pointer-events:none;
 }
-
-/* Buttons */
-button {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 8px;
-    transition: 0.3s;
+.letter{
+    position:fixed;
+    font-size:14px;
+    opacity:0.5;
+    cursor:pointer;
 }
-
-button:hover {
-    transform: scale(1.1);
-}
-
-.primary {
-    background: white;
-    color: #ff4d6d;
-}
-
-.dark {
-    background: #222;
-    color: white;
-    position: relative;
-}
-
-/* Love Meter */
-.love-meter {
-    margin-top: 15px;
-    height: 18px;
-    width: 100%;
-    background: rgba(255,255,255,0.3);
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.love-fill {
-    height: 100%;
-    width: 0%;
-    background: white;
-    transition: width 1s ease;
-}
-
-/* Floating Hearts */
-.heart {
-    position: fixed;
-    font-size: 20px;
-    animation: floatUp linear infinite;
-    opacity: 0.8;
-}
-
-@keyframes floatUp {
-    from { transform: translateY(100vh); }
-    to { transform: translateY(-10vh); }
-}
-
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-    100% { transform: translateY(0px); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.hidden { display: none; }
-
-.slider { width: 80%; }
-
+.letter:hover{opacity:1;transform:scale(1.5)}
 </style>
 </head>
 
 <body>
 
-<!-- MAIN SECTION -->
 <section>
 <div class="container">
+<h1>Ghadoushty 💖</h1>
+<p>Welcome to your universe.</p>
 
-<h1>Ghada 💖 (aka my Ghadoush:3)</h1>
+<button onclick="showGame('tic')">Tic Tac Toe</button>
+<button onclick="showGame('hearts')">Catch Hearts</button>
+<button onclick="showGame('reaction')">Reaction Game</button>
+<button onclick="toggleMusic()">Toggle Music 🎵</button>
 
-<p>
-Dear Ghadoush,<br><br>
-If being cute was illegal, you'd be serving life.  
-If stealing hearts was a crime, Mr. Vampire would file a complaint. 🧛‍♂️  
-And honestly? I still wanna bite you (respectfully).  
-</p>
-
-<h2>Do you love me:3</h2>
-
-<button class="primary" onclick="acceptLove()">Yes (Correct Answer)</button>
-<button class="dark" id="noBtn">No (Illegal Option)</button>
-
-<div class="love-meter">
-<div class="love-fill" id="loveFill"></div>
-</div>
-
-<p id="loveResponse"></p>
-
+<p id="achievementText"></p>
 </div>
 </section>
 
-<!-- LOVE SLIDER -->
-<section>
+<!-- TIC TAC TOE -->
+<section id="tic" class="hidden">
 <div class="container">
-<h2>How Much Do You Love Me? 😌</h2>
-<input type="range" min="0" max="100" value="70" class="slider" id="loveSlider">
-<p id="sliderOutput"></p>
+<h2>Tic Tac Toe 🧠</h2>
+<div id="ticBoard"></div>
+<p id="ticStatus"></p>
+<button onclick="resetTic()">Restart</button>
 </div>
 </section>
 
-<!-- MINI GAMES -->
-<section>
+<!-- HEART GAME -->
+<section id="hearts" class="hidden">
 <div class="container">
-<h2>Mini Games For My Fairy 🧚‍♀️</h2>
-
-<button class="primary" onclick="startHeartGame()">Catch My Heart 💖</button>
-<button class="primary" onclick="vampireQuiz()">Mr. Vampire Quiz 🧛‍♂️</button>
-<button class="primary" onclick="generateCompliment()">Generate Corny Compliment ✨</button>
-
-<p id="gameOutput"></p>
-<p id="scoreText"></p>
-
+<h2>Catch The Hearts ❤️</h2>
+<canvas id="heartCanvas" width="400" height="500"></canvas>
+<p id="heartScore"></p>
 </div>
 </section>
+
+<!-- REACTION -->
+<section id="reaction" class="hidden">
+<div class="container">
+<h2>Reaction Speed ⚡</h2>
+<div id="reactionBox">Wait for pink...</div>
+<p id="reactionResult"></p>
+</div>
+</section>
+
+<audio id="bgMusic" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b6c0f.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-
-// RUNAWAY NO BUTTON
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", function() {
-    const x = Math.random()*300 - 150;
-    const y = Math.random()*300 - 150;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-});
-
-// ACCEPT LOVE
-function acceptLove() {
-    document.getElementById("loveFill").style.width = "100%";
-    document.getElementById("loveResponse").innerText =
-    "Correct. Ghadoush supremacy confirmed. Mr. Vampire has been defeated. 💘";
-    explodeHearts();
+/* ---------- GAME SWITCH ---------- */
+function showGame(id){
+    document.querySelectorAll("section").forEach(s=>{
+        if(s.id) s.classList.add("hidden")
+    });
+    document.getElementById(id).classList.remove("hidden");
 }
 
-// SLIDER DRAMA
-const slider = document.getElementById("loveSlider");
-slider.oninput = function(){
-    const value = this.value;
-    if(value < 30){
-        sliderOutput.innerText = "Suspicious answer detected.";
-    } else if(value < 70){
-        sliderOutput.innerText = "Acceptable. But we can improve.";
-    } else {
-        sliderOutput.innerText = "Elite love levels. Approved.";
+/* ---------- MUSIC ---------- */
+const music=document.getElementById("bgMusic");
+let playing=false;
+function toggleMusic(){
+    if(!playing){music.play();playing=true}
+    else{music.pause();playing=false}
+}
+
+/* ---------- CONFETTI ---------- */
+function confetti(){
+    for(let i=0;i<100;i++){
+        const c=document.createElement("div");
+        c.classList.add("confetti");
+        c.style.left=Math.random()*100+"vw";
+        c.style.top=Math.random()*100+"vh";
+        c.style.background=["#ff4d6d","#ffd6e0","#fff"][Math.floor(Math.random()*3)];
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),2000);
     }
 }
 
-// COMPLIMENT GENERATOR
-function generateCompliment(){
-    const list = [
-        "You're cuter than 1,000 baby pandas.",
-        "Even Mr. Vampire is scared of how much I love you.",
-        "You glow brighter than my screen at 3AM.",
-        "You are illegally adorable, Ghadoush.",
-        "If perfection had a face, it would be yours."
-    ];
-    gameOutput.innerText = list[Math.floor(Math.random()*list.length)];
-}
-
-// VAMPIRE QUIZ
-function vampireQuiz(){
-    const answer = prompt("Who owns my heart?\n1) Ghadoush\n2) Mr. Vampire\n3) Random person");
-    if(answer === "1"){
-        gameOutput.innerText = "Correct. Ghadoush owns it permanently.";
-    } else {
-        gameOutput.innerText = "Wrong. Mr. Vampire has been rejected.";
+/* ---------- ACHIEVEMENTS ---------- */
+let achievements=[];
+function unlock(name){
+    if(!achievements.includes(name)){
+        achievements.push(name);
+        achievementText.innerText="Unlocked: "+name;
+        confetti();
     }
 }
 
-// HEART GAME
-let score = 0;
-function startHeartGame(){
-    score = 0;
-    scoreText.innerText = "Score: 0";
-    for(let i=0;i<15;i++){
-        createHeart();
+/* ---------- TIC TAC TOE (MEDIUM AI) ---------- */
+let board=["","","","","","","","",""];
+let player="X";
+const boardDiv=document.getElementById("ticBoard");
+function drawBoard(){
+    boardDiv.innerHTML="";
+    board.forEach((cell,i)=>{
+        const btn=document.createElement("button");
+        btn.innerText=cell;
+        btn.onclick=()=>move(i);
+        boardDiv.appendChild(btn);
+    });
+}
+function move(i){
+    if(board[i]===""){
+        board[i]="X";
+        if(checkWin("X")){ticStatus.innerText="Ghadoushty Wins 💖";unlock("Tic Master");return;}
+        aiMove();
+        drawBoard();
     }
 }
+function aiMove(){
+    let empty=board.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+    if(empty.length===0)return;
+    let pick=empty[Math.floor(Math.random()*empty.length)];
+    board[pick]="O";
+}
+function checkWin(p){
+    const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[0,4,8],[1,4,7],[2,5,8],[2,4,6]];
+    return wins.some(w=>w.every(i=>board[i]===p));
+}
+function resetTic(){board=["","","","","","","","",""];drawBoard();ticStatus.innerText=""}
+drawBoard();
 
+/* ---------- HEART GAME ---------- */
+const canvas=document.getElementById("heartCanvas");
+const ctx=canvas.getContext("2d");
+let catcher={x:180,width:60};
+let hearts=[];
+let score=0;
+let lives=3;
 function createHeart(){
-    const heart = document.createElement("div");
-    heart.innerHTML = "💖";
-    heart.classList.add("heart");
-    heart.style.left = Math.random()*100+"vw";
-    heart.style.animationDuration = (Math.random()*4+3)+"s";
-    document.body.appendChild(heart);
-
-    heart.onclick = function(){
-        score++;
-        scoreText.innerText = "Score: " + score + " (You caught my heart 😳)";
-        heart.remove();
-    }
-    setTimeout(()=>heart.remove(),7000);
+    hearts.push({x:Math.random()*360,y:0,speed:2+Math.random()*2});
 }
+function drawHeart(x,y){
+    ctx.fillStyle="red";
+    ctx.beginPath();
+    ctx.arc(x,y,8,0,Math.PI*2);
+    ctx.fill();
+}
+function heartLoop(){
+    ctx.clearRect(0,0,400,500);
+    ctx.fillStyle="#ff4d6d";
+    ctx.fillRect(catcher.x,470,catcher.width,15);
+    hearts.forEach((h,i)=>{
+        h.y+=h.speed;
+        drawHeart(h.x,h.y);
+        if(h.y>470 && h.x>catcher.x && h.x<catcher.x+catcher.width){
+            hearts.splice(i,1);
+            score++;
+            if(score>=10)unlock("Heart Catcher Pro");
+        } else if(h.y>500){
+            hearts.splice(i,1);
+            lives--;
+        }
+    });
+    heartScore.innerText="Score: "+score+" | Lives: "+lives;
+    requestAnimationFrame(heartLoop);
+}
+document.addEventListener("mousemove",(e)=>{
+    const rect=canvas.getBoundingClientRect();
+    catcher.x=e.clientX-rect.left-catcher.width/2;
+});
+setInterval(createHeart,1000);
+heartLoop();
 
-// HEART EXPLOSION
-function explodeHearts(){
-    for(let i=0;i<40;i++){
-        createHeart();
+/* ---------- REACTION GAME ---------- */
+let startTime;
+reactionBox.onclick=function(){
+    if(reactionBox.style.background==="pink"){
+        let time=Date.now()-startTime;
+        reactionResult.innerText=time+" ms\nNo matter how fast you are, my heart fell for you faster 💘";
+        unlock("Too Fast For Love");
+        reactionBox.style.background="#fff";
+        reactionBox.innerText="Play Again";
     }
 }
+function startReaction(){
+    reactionBox.innerText="Wait...";
+    setTimeout(()=>{
+        reactionBox.style.background="pink";
+        reactionBox.innerText="CLICK!";
+        startTime=Date.now();
+    },1000+Math.random()*3000);
+}
+startReaction();
 
-// BACKGROUND FLOATING HEARTS
-setInterval(()=>{
-    const heart = document.createElement("div");
-    heart.innerHTML="💗";
-    heart.classList.add("heart");
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration="8s";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),8000);
-},1500);
-
+/* ---------- HIDDEN MESSAGE ---------- */
+const message="IWILLALWAYSCHOOSEYOU";
+let collected="";
+for(let i=0;i<message.length;i++){
+    const span=document.createElement("div");
+    span.innerText=message[i];
+    span.classList.add("letter");
+    span.style.left=Math.random()*95+"vw";
+    span.style.top=Math.random()*95+"vh";
+    span.onclick=function(){
+        collected+=this.innerText;
+        this.remove();
+        if(collected.length===message.length){
+            alert("I WILL ALWAYS CHOOSE YOU 💖");
+            unlock("Secret Finder");
+        }
+    }
+    document.body.appendChild(span);
+}
 </script>
 
 </body>
